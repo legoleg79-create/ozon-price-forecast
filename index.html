@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Прогноз дохода Ozon</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <main class="shell">
+      <section class="topbar">
+        <div>
+          <p class="eyebrow">Ozon FBO/FBS</p>
+          <h1>Прогноз дохода при изменении цены</h1>
+        </div>
+        <div class="source">
+          <span>Тарифы доставки</span>
+          <strong>с 01.05.2026</strong>
+        </div>
+      </section>
+
+      <section class="layout">
+        <aside class="panel inputs">
+          <div class="panel-head">
+            <h2>Параметры</h2>
+            <button id="resetBtn" type="button">Сбросить</button>
+          </div>
+
+          <div class="group">
+            <h3>Товар и цена</h3>
+            <label>Себестоимость, ₽ <input data-field="cost" type="number" min="0" step="1"></label>
+            <label>Цена продавца, ₽ <input data-field="price" type="number" min="0" step="1"></label>
+            <label>Мин. цена покупателя, ₽ <input data-field="buyerMinPrice" type="number" min="0" step="1"></label>
+            <label>Диапазон таблицы, ₽ <span class="inline"><input data-field="priceMin" type="number" min="0" step="1"><input data-field="priceMax" type="number" min="0" step="10"></span></label>
+          </div>
+
+          <div class="group">
+            <h3>Комиссии и налоги</h3>
+            <label>Комиссия Ozon свыше 300 ₽, % <input data-field="commissionRate" type="number" min="0" step="0.1"></label>
+            <label>Комиссия за заказ, % <input data-field="orderFeeRate" type="number" min="0" step="0.1"></label>
+            <label>Эквайринг, % <input data-field="acquiringRate" type="number" min="0" step="0.1"></label>
+            <label>Доставка ДМВ, ₽ <input data-field="dmvDelivery" type="number" min="0" step="1"></label>
+            <label class="check"><input data-field="useProfitTax" type="checkbox"> Налог Д/Р</label>
+            <label>Налог Д/Р, % <input data-field="profitTaxRate" type="number" min="0" step="0.1"></label>
+            <label>Налог доход, % <input data-field="incomeTaxRate" type="number" min="0" step="0.1"></label>
+          </div>
+
+          <div class="group">
+            <h3>Логистика</h3>
+            <label>Кластер отправления <select data-field="fromCluster"></select></label>
+            <label>Кластер доставки <select data-field="toCluster"></select></label>
+            <label>Объём из ЛК, л <input data-field="volumeManual" type="number" min="0" step="0.001"></label>
+            <div class="dims">
+              <label>Ш, мм <input data-field="width" type="number" min="0" step="1"></label>
+              <label>В, мм <input data-field="height" type="number" min="0" step="1"></label>
+              <label>Д, мм <input data-field="length" type="number" min="0" step="1"></label>
+            </div>
+            <label>Коэф. сценария “до” <input data-field="logisticsMultiplier" type="number" min="0" step="0.1"></label>
+            <label>Надбавка от цены, % <input data-field="logisticsPriceRate" type="number" min="0" step="0.1"></label>
+          </div>
+        </aside>
+
+        <section class="workspace">
+          <div class="kpis">
+            <article><span>Прибыль сейчас</span><strong id="profitNow">0 ₽</strong></article>
+            <article><span>ROI сейчас</span><strong id="roiNow">0%</strong></article>
+            <article><span>Логистика</span><strong id="deliveryNow">0 ₽</strong></article>
+            <article><span>Лучшая цена</span><strong id="bestPrice">0 ₽</strong></article>
+          </div>
+
+          <div class="panel chart-panel">
+            <div class="panel-head">
+              <h2>Кривая прибыли</h2>
+              <div class="legend"><span></span> прибыль после расходов</div>
+            </div>
+            <canvas id="profitChart" width="1100" height="320"></canvas>
+          </div>
+
+          <div class="panel table-panel">
+            <div class="panel-head">
+              <h2>Расчёт по ценам</h2>
+              <p>Цена 100 ₽ считается автоматически, как и остальные строки.</p>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Цена</th>
+                    <th>Комм.</th>
+                    <th>Прибыль от</th>
+                    <th>Прибыль до</th>
+                    <th>Ozon</th>
+                    <th>Эквайринг</th>
+                    <th>Заказ</th>
+                    <th>Логистика</th>
+                    <th>ДМВ</th>
+                    <th>ROI от</th>
+                    <th>ROI до</th>
+                  </tr>
+                </thead>
+                <tbody id="rows"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+      </section>
+    </main>
+
+    <script src="tariffs.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>

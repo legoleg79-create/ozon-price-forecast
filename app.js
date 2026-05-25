@@ -6,7 +6,6 @@ const defaults = {
   price: 222,
   buyerMinPrice: 171,
   priceMin: 50,
-  priceMax: 6100,
   commissionRate: 40,
   orderFeeRate: 20,
   acquiringRate: 1.9,
@@ -135,18 +134,18 @@ function calc(price) {
   };
 }
 
-function priceStep() {
-  const span = Math.max(1, numberValue("priceMax") - numberValue("priceMin"));
+function priceStep(min, max) {
+  const span = Math.max(1, max - min);
   if (span <= 800) return 5;
   if (span <= 2500) return 25;
   return 100;
 }
 
 function buildPriceRows() {
-  const min = Math.max(0, Math.min(numberValue("priceMin"), numberValue("priceMax")));
-  const max = Math.max(min, Math.max(numberValue("priceMin"), numberValue("priceMax")));
-  const step = priceStep();
   const selected = numberValue("price");
+  const min = Math.max(0, Math.min(numberValue("priceMin"), selected));
+  const max = selected + Math.max(selected * 0.5, 500);
+  const step = priceStep(min, max);
   const prices = [];
 
   for (let price = min; price <= max; price += step) prices.push(price);

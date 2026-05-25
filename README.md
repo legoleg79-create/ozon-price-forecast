@@ -2,6 +2,8 @@
 
 Статический калькулятор для прогноза прибыли при изменении цены товара на Ozon.
 
+https://legoleg79-create.github.io/ozon-price-forecast/
+
 ## Что считает
 
 - комиссию Ozon;
